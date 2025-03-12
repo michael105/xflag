@@ -60,6 +60,42 @@ On the other hand, in my experience, cpp tends to blow up.
 
 Any thoughts are highly welcome.
 
+
+Currently I'm redesigning strerror.
+The error messages blow the binary with 4kB.
+Since I don't want to use shared libraries, I need other possibilities:
+1.fork, and execute another binary.
+2.Load the error messages into shared memory.
+3.Load another binary into memoery(shared), 
+	  and execute the function
+		perror only. 
+4.Have a shared memory db, which also server as db for environment settings.
+
+1 I did already implement. But I dislike it.
+2 could be better. But I dislike the overhead.
+3 I need eventually to resort to, independent of perror/strerror.
+  printf just blows my binaries too much.
+  I even don't really know why, but with this very problem every printf
+  implementation seems to struggle.
+4 - came into my mind, while typing.
+ 
+Eventually I should put shared functions like printf into a shared memory db
+as well.
+
+So they can be shared alo between different namespoaces.
+
+I dislike the idea of having 4kB of strings multiplied for each binary, as 
+well as for each namespace.
+
+Sametime I prefer statically linked binaries, which work without modifcation
+at every 64bit system.
+
+
+
+
+---
+
+
 I leave xflag the way it is for now, as I stated above, yet there is no other
 tool, which is able to list and modify xflags exclusively.
 Someone also did say, release early, release often...

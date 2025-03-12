@@ -103,10 +103,7 @@ typedef unsigned int flag_t;
 	x,,"print flags hexadecimal"
 
 #define INT_OPTS P
-
-
 CHECK_OPTIONS;
-
 DECLARE_SETTING;
 
 USAGE( "path [path] ..." );
