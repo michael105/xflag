@@ -1,3 +1,6 @@
+// license: BSD 3clause
+// misc147, 2025, github.com/michael105
+
 
 #ifndef MLIB
 
@@ -66,6 +69,8 @@ typedef unsigned char uchar;
 
 #include "macros/macrolib.h"
 
+#include "macros/options.h"
+
 #endif
 
 // type of flag field in fsxattr
@@ -74,7 +79,9 @@ typedef unsigned int flag_t;
 // indicate error
 #define EFLAG 0x10000000
 
-#include "options.h"
+#ifndef _options_h
+#include "macros/options.h"
+#endif
 
 #define TOOL xflag
 #define LICENSE BSD3clause

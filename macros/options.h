@@ -1,3 +1,9 @@
+// license: AGPL
+// misc147, 2025
+#ifndef _options_h
+#define _options_h
+
+
 
 // vt100 ctrl sequence, goto column 20 in the summaries
 // (insert a tab, for parsing)
@@ -218,4 +224,4 @@ typedef union {
 
 // ============================
 
-
+#endif
