@@ -376,6 +376,8 @@ MAIN{
 }
 
 
+#ifdef TEST
+
 MAIN_TEST{
 	writesl("Test " _Q(TOOL));
 
@@ -401,6 +403,6 @@ MAIN_TEST{
 	exit(0);
 }
 
-
+#endif
 
 
