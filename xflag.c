@@ -4,7 +4,7 @@
 
 #define TOOL xflag
 #define LICENSE BSD3clause
-#define VERSION "0.1"
+#define VERSION "0.1-devel"
 
 #include "tools.h"
 
@@ -138,7 +138,7 @@ MAN(R"(xflag lists or modifies extended flags of files and directories.
 The flags are either displayed in long format,
 or as a string, consisting of abbreviations.
 
-list of possible letters
+list of flags
 
 r realtime       data in realtime volume 
 p prealloc       preallocated file extents 

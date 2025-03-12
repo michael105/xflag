@@ -43,7 +43,7 @@
 #define _ifdef_VERSION
 
 #ifndef VERSION
-#define VERSION "0.1"
+#define VERSION "0.1-devel"
 #endif
 
 # define COPYRIGHT(_year) "(c) 2014-" #_year " misc147 " IFDEF_ELSE(LICENSE,_Q(LICENSE),"AGPL") ", www.github.com/michael105\n"
