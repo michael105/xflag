@@ -74,7 +74,7 @@ typedef unsigned char uchar;
 #endif
 
 // type of flag field in fsxattr
-typedef unsigned int flag_t;
+typedef unsigned int xflag_t;
 
 // indicate error
 #define EFLAG 0x10000000
@@ -216,7 +216,7 @@ const char flagletters[] = {_FLAGS}; // string of all letters (without ending 0)
 // no need to supply the callback. (overwrites?)
 
 
-int _xflag_main( uint opts, char* path, flag_t setflags, flag_t delflags, uint projectid ){
+int _xflag_main( uint opts, char* path, xflag_t setflags, xflag_t delflags, uint projectid ){
 	# define xflag_main( opts, path, ... ) __xflag_main( opts,path, __VA_OPT__(__VA_ARGS__,) 0,0,0 )
 	# define __xflag_main( opts, path, setflags, delflags, projectid, ... ) _xflag_main( opts,path, setflags, delflags, projectid )
 
@@ -308,9 +308,9 @@ int _xflag_main( uint opts, char* path, flag_t setflags, flag_t delflags, uint p
 }
 
 
-// convert a string of flag chars to flag_t
-flag_t stringtoflags( const char* s ){
-	flag_t flags = 0;
+// convert a string of flag chars to xflag_t
+xflag_t stringtoflags( const char* s ){
+	xflag_t flags = 0;
 	
 	for ( const char *p = s; *p; p++ ){
 		const struct flagstruct* f = flagarr; 
@@ -339,7 +339,7 @@ MAIN{
 
 	PARSEARGV( 'h': usage(), 'H': help() );
 
-	flag_t flags = 0, dflags = 0;
+	xflag_t flags = 0, dflags = 0;
 	if ( OPT(s) ){
 		if ( OPT(a|d) ){
 			ewrites("Cannot combine -s and -a/-d\n");
