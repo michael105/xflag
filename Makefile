@@ -12,6 +12,8 @@ test:
 	diff -ac --color=always test.expect test.result && echo test ok || ( echo test failed && false )
 
 
+inittest:
+	./xflag.test  2>&1 | tee test.expect
 
 
 
