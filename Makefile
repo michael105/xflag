@@ -2,14 +2,17 @@
 
 
 
-xflag:
+xflag: xflag.c
 	gcc -o xflag xflag.c -Os -s -static
 
 
-test:
+xflag.test: xflag.c
 	gcc -o xflag.test xflag.c -Os -s -static -DTEST
+
+
+test: xflag.test
 	./xflag.test  2>&1 | tee test.result
-	diff -ac --color=always test.expect test.result && echo test ok || ( echo test failed && false )
+	diff -ac --color=always test.expect test.result && echo -e "-------\ntest ok" || ( echo test failed && false )
 
 
 inittest:
