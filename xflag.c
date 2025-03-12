@@ -189,6 +189,7 @@ struct flagstruct {
 
 // extended
 #define F(flag,letter,shortname,longdesc) { flag, letter, shortname IFEXT(,longdesc) },
+
 const struct flagstruct flagarr[] = {
 	_FLAGS
 };

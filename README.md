@@ -41,7 +41,7 @@ I'm still about to sort a useful syntax for the os functions out.
 
 I'm looking for something, what is as easy as a script language.
 
-Admittedly, it would be possible to use scripts, this would also be 
+It would be possible to use scripts, this would also be 
 possible with threads. (busybox does something very close, processes
 started by scripts are directly spawned from the busybox binary)
 
@@ -66,10 +66,10 @@ The error messages blow the binary with 4kB.
 Since I don't want to use shared libraries, I need other possibilities:
 1.fork, and execute another binary.
 2.Load the error messages into shared memory.
-3.Load another binary into memoery(shared), 
+3.Load another binary into memory(shared), 
 	  and execute the function
 		perror only. 
-4.Have a shared memory db, which also server as db for environment settings.
+4.Have a shared memory db, which also serves as db for environment settings.
 
 1 I did already implement. But I dislike it.
 2 could be better. But I dislike the overhead.
