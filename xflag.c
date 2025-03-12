@@ -2,6 +2,13 @@
 // misc147, 2025, github.com/michael105
 
 
+#define TOOL xflag
+#define LICENSE BSD3clause
+#define VERSION "0.1"
+
+#include "tools.h"
+
+
 #ifndef MLIB
 
 #include <stdio.h>
@@ -48,13 +55,13 @@ int dprints( int fd, ... ){
 #define eprintsl(...) prints(__VA_ARGS__,"\n")
 
 #define ewrite(_s,_len) write(STDERR_FILENO,_s,_len)
-#define ewrites(_s) write(STDERR_FILENO,_s,sizeof(_s))
-#define ewritesl(_s) write(STDERR_FILENO,_s "\n",sizeof(_s)+1)
+#define ewrites(_s) ewrite(_s,sizeof(_s))
+#define ewritesl(_s) ewrites(_s "\n")
 
 #define writes(_s) write(STDOUT_FILENO,_s,sizeof(_s))
-#define writesl(_s) write(STDOUT_FILENO,_s "\n",sizeof(_s)+1)
+#define writesl(_s) writes(_s "\n")
 
-#define printl() prints("\n")
+#define printl() writes("\n")
 
 #define ERRNO(_e) (errno)
 
@@ -73,6 +80,7 @@ typedef unsigned char uchar;
 
 #endif
 
+
 // type of flag field in fsxattr
 typedef unsigned int xflag_t;
 
@@ -82,11 +90,6 @@ typedef unsigned int xflag_t;
 #ifndef _options_h
 #include "macros/options.h"
 #endif
-
-#define TOOL xflag
-#define LICENSE BSD3clause
-#define VERSION "0.1"
-#include "tools.h"
 
 #define OPTIONS \
 	h,,"show usage",\
