@@ -1,5 +1,6 @@
 // license: AGPL
-// misc147, 2025
+// misc147, 2025, www.github.com/michael105
+
 #ifndef _options_h
 #define _options_h
 

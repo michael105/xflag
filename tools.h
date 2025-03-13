@@ -32,7 +32,8 @@
 #define MAIN int tmain(int argc,char **argv, char **__envp)
 #else
 #define MAIN int main(int argc,char **argv, char **__envp)
-#define MAIN_TEST int __attribute__((unused))__main_test(int argc,char **argv, char **__envp)
+// 
+#define MAIN_TEST static inline int __main_test(int argc,char **argv, char **__envp)
 #endif
 
 

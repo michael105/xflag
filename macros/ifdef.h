@@ -1,3 +1,15 @@
+// macros (in development, experimental state..)
+// license: cc-by-sa 4.0
+// author: misc147 www.github.com/michael105
+//
+// I kindly ask to name me and the given internet address
+// if you're using this code, also in parts or ideas.
+// In my understanding, the cc-by-sa 4.0 license allows using this code
+// even in commercial projects, as long as you
+// give attribution and republish the copied code parts or files.
+//
+
+
 
 
 //+doc IFDEF(var,_then) expands to _then

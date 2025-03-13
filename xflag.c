@@ -148,7 +148,7 @@ s sync           all writes synchronous
 A noatime        do not update access time 
 d nodump         do not include in backups 
 t rtinherit      create with rt bit set 
-P projectinherit create with parents projid 
+P projectinherit create with parents projectid 
 n nosymlinks     disallow symlink creation 
 e extsize        extent size allocator hint 
 E extsizeinherit inherit inode extent size 
@@ -376,8 +376,6 @@ MAIN{
 }
 
 
-#ifdef TEST
-
 MAIN_TEST{
 	writesl("Test " _Q(TOOL));
 
@@ -402,7 +400,5 @@ MAIN_TEST{
 	
 	exit(0);
 }
-
-#endif
 
 
