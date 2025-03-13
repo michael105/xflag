@@ -102,8 +102,10 @@ typedef unsigned int xflag_t;
 	s,setflags,"set given flags exclusive", \
 	d,deleteflags,"delete flags", \
 	D,,"remove all flags", \
-	g,,"print flags", \
-	x,,"print flags hexadecimal"
+	g,,"print flags (default)", \
+	x,,"print flags hexadecimal", \
+	o,,"print flags octal", \
+	F,,"don't display filenames", \
 
 #define INT_OPTS P
 CHECK_OPTIONS;
@@ -183,15 +185,15 @@ F(FS_XFLAG_HASATTR,'X',"hasattr","has extended attributes")
 
 
 struct flagstruct {
-	unsigned int flag;
+	xflag_t flag;
 	const char letter;
 	const char* shortname;
-	IFEXT(const char *desc;)
+	//IFEXT(const char *desc;)
 };
 
 
 // extended
-#define F(flag,letter,shortname,longdesc) { flag, letter, shortname IFEXT(,longdesc) },
+#define F(flag,letter,shortname,longdesc) { flag, letter, shortname }, //IFEXT(,longdesc) },
 
 const struct flagstruct flagarr[] = {
 	_FLAGS
@@ -208,6 +210,46 @@ const char flagletters[] = {_FLAGS}; // string of all letters (without ending 0)
 
 //#define F(a,b,c,d)  
 //#define FLAGSENUM enum { 
+
+int muitohex( char* buf, uint i ){
+	char *p = buf;
+	//*p++ = '0'; *p++='x';
+	int digits = 1;
+	for ( int a = 8; a--; ){
+		ROL( 4, i );
+		int b = (i&0xf);
+		if ( b ){
+			digits = 8;
+			if ( b > 9 ) b+= 7;
+			//b += ((-b+9)&0x700)>>8;
+		}
+		if ( digits>a )
+			*p++ = b + '0';
+	}
+	*p = 0;
+
+	return(p-buf);
+}
+
+int muitooct( char *buf, uint i ){
+	int digits = 1; // at least one digit (0)
+	char *p = buf;
+	//*p++ = '0'; // prefix 0
+	ROL(2,i);
+	int b = (i&3);
+	for ( int a = 11; a--; ){
+		if ( b )
+			digits = 12;
+		if ( digits>a )
+			*p++ = b + '0';
+		ROL( 3, i );
+		b = (i&7);
+	}
+	*p = 0;
+
+	return(p-buf);
+}
+
 
 
 // notes: needs abstraction to be included in ls.
@@ -270,39 +312,57 @@ int _xflag_main( uint opts, char* path, xflag_t setflags, xflag_t delflags, uint
 
 	close(fd);
 
-	if ( !OPT(g|p) && OPT(a|s|d|D|P) )
+	if ( !OPT(g|p|o|x|l|c) && OPT(a|s|d|D|P) )
 		return(ret);
 	
 	// list flags
 	char buf[LEN+2]; // 
-	if ( !OPT(c) ){
-		memset(buf,'-',LEN);
-	}
-	int w = 0;
+						 
+	if ( OPT(o) ){
+		muitooct( buf, fsx.fsx_xflags );
+		prints( buf,"\t" ); 
+	} 
+	if ( OPT(x) ){
+		muitohex( buf, fsx.fsx_xflags );
+		prints( buf,"\t" ); 
+	} 
 
 	IFEXT( if ( OPT(l) )
-		prints(path,"\t");)
+		if ( !OPT(F) ) prints(path,"\t");)
 
-	int b = 0;
-	for ( int a = 0; fsx.fsx_xflags >= flagarr[a].flag && a<LEN; a++ ){
+
+	if ( !(OPT(o|x) && !OPT(l) ) ){ // write flag letters
+		if ( !OPT(c) ){
+			memset(buf,'-',LEN);
+		}
+
+		int b = 0, w = 0;
+		for ( int a = 0; fsx.fsx_xflags >= flagarr[a].flag && a<LEN; a++ ){
 			if ( !OPT(c) )
 				b=a;
-		if ( fsx.fsx_xflags & flagarr[a].flag ){
-		IFEXT( if ( OPT(l) ){
-				w = prints( (w?",":"\t"), flagarr[a].shortname );
-			} else )
-			buf[b] = flagarr[a].letter;
-			b++;
-		} 
+			if ( fsx.fsx_xflags & flagarr[a].flag ){
+				IFEXT( if ( OPT(l) ){
+						w = prints( (w?",":OPT(F)?"":"\t"), flagarr[a].shortname );
+						} else )
+					buf[b] = flagarr[a].letter;
+				b++;
+			} 
+		}
+
+		if ( OPT(c) )
+			buf[b] = 0;
+		else
+			buf[LEN] = 0;
 	}
 
-	if ( OPT(c) )
-		buf[b] = 0;
-	else
-		buf[LEN] = 0;
+	IFEXT( if ( !OPT(l) ){ )
+		if ( !OPT(o|x) ) prints( buf ); 
+		if ( !OPT(F) ){
+			if ( !OPT(x|o) ) prints( "\t" ); 
+			prints (path );
+		}
+	IFEXT( } ) 
 
-	IFEXT( if ( !OPT(l) ) )
-		prints( buf,"\t",path );
 	printl();
 
 
