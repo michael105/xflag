@@ -4,7 +4,8 @@
 
 #define TOOL xflag
 #define LICENSE BSD3clause
-#define VERSION "0.1-devel"
+#define VERSION "0.1-devel-27rr"
+#define GITCOMMIT 
 
 #include "tools.h"
 
