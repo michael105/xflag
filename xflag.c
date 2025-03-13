@@ -211,20 +211,23 @@ const char flagletters[] = {_FLAGS}; // string of all letters (without ending 0)
 //#define F(a,b,c,d)  
 //#define FLAGSENUM enum { 
 
+// convert uint to hex.
+// did have some fun with branchless experiments.
+// I again prefer the in opcodes smallest solution.
 int muitohex( char* buf, uint i ){
 	char *p = buf;
 	//*p++ = '0'; *p++='x';
-	int digits = 1;
+	uint digits = 1;
 	for ( int a = 8; a--; ){
 		ROL( 4, i );
 		int b = (i&0xf);
-		if ( b ){
-			digits = 8;
-			if ( b > 9 ) b+= 7;
+		digits |= (-b); // get positive if b>0
+
+		if ( digits>a ){
+			if ( b > 9 ) b+= 39; //7; (7 = capitals)
 			//b += ((-b+9)&0x700)>>8;
-		}
-		if ( digits>a )
 			*p++ = b + '0';
+		}
 	}
 	*p = 0;
 
@@ -232,17 +235,16 @@ int muitohex( char* buf, uint i ){
 }
 
 int muitooct( char *buf, uint i ){
-	int digits = 1; // at least one digit (0)
+	uint digits = 1; // at least one digit (0)
 	char *p = buf;
 	//*p++ = '0'; // prefix 0
 	ROL(2,i);
 	int b = (i&3);
 	for ( int a = 11; a--; ){
-		if ( b )
-			digits = 12;
+		ROL( 3, i );
+		digits |= (-b);
 		if ( digits>a )
 			*p++ = b + '0';
-		ROL( 3, i );
 		b = (i&7);
 	}
 	*p = 0;
