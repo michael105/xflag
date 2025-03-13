@@ -98,7 +98,8 @@ Did spend quite some time with base conversions, to realize finally,
 the most simple solution without bit shifts but division
 might be the best solution as well.
 
-Sametime, I got some spagghetti with all those options.
+Sametime, I got some spagghetti with all those options, 
+which solely set the output format.
 
 Furthermore, I still haven't a solution for binary output,
 to combine different tools via pipes without having to convert the 

@@ -20,3 +20,6 @@ inittest:
 
 
 
+up:
+	rev=revision.sh
+	echo $(rev)

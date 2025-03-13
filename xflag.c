@@ -106,6 +106,8 @@ typedef unsigned int xflag_t;
 	x,,"print flags hexadecimal", \
 	o,,"print flags octal", \
 	F,,"don't display filenames", \
+	i,,"set immutable", \
+	I,,"revoke immutable"
 
 #define INT_OPTS P
 CHECK_OPTIONS;
@@ -305,7 +307,7 @@ int _xflag_main( uint opts, char* path, xflag_t setflags, xflag_t delflags, uint
 		return(-ERRNO(ret));
 	}
 
-	if ( OPT(a|s|d|D|P) ){ // modify
+	if ( OPT(a|s|d|D|P|i|I) ){ // modify
 	
 		if ( OPT(s) )
 			fsx.fsx_xflags = setflags;
@@ -317,6 +319,10 @@ int _xflag_main( uint opts, char* path, xflag_t setflags, xflag_t delflags, uint
 			fsx.fsx_xflags = 0;
 		if ( OPT(P) )
 			fsx.fsx_projid = projectid;
+		if ( OPT(I) )
+			fsx.fsx_xflags &= ~FS_XFLAG_IMMUTABLE;
+		if ( OPT(i) )
+			fsx.fsx_xflags |= FS_XFLAG_IMMUTABLE;
 
 		// write
 		if ( ( ret = ioctl(fd, FS_IOC_FSSETXATTR, &fsx)) < 0 ) {
@@ -336,12 +342,18 @@ int _xflag_main( uint opts, char* path, xflag_t setflags, xflag_t delflags, uint
 
 	close(fd);
 
-	if ( !OPT(g|p|o|x|l|c) && OPT(a|s|d|D|P) )
+	if ( !OPT(g|p|o|x|l|c) && OPT(a|s|d|D|P|i|I) )
 		return(ret);
 	
 	// list flags
 	char buf[LEN+2]; // 
 						 
+	if ( OPT(p) ){
+		//muitooct( buf, fsx.fsx_xflags );
+		//prints( buf,"\t" ); 
+		prints(muitobase(buf,fsx.fsx_projid,10),"\t");
+	} 
+
 	if ( OPT(o) ){
 		//muitooct( buf, fsx.fsx_xflags );
 		//prints( buf,"\t" ); 
