@@ -21,5 +21,6 @@ inittest:
 
 
 up:
-	rev=revision.sh
-	echo $(rev)
+	sed -Ei "s/(^#define VERSION .*)devel.*/\1devel-`revision.sh`\"/" xflag.c
+
+
