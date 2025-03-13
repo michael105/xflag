@@ -90,7 +90,21 @@ well as for each namespace.
 Sametime I prefer statically linked binaries, which work without modifcation
 at every 64bit system.
 
+---
 
+... so, I'm a little bit annoyed.
+
+Did spend quite some time with base conversions, to realize finally,
+the most simple solution without bit shifts but division
+might be the best solution as well.
+
+Sametime, I got some spagghetti with all those options.
+
+Furthermore, I still haven't a solution for binary output,
+to combine different tools via pipes without having to convert the 
+values to and from ascii format again and again.
+
+Might need to build a separated output logic, with patterns of cgi scripts.
 
 
 ---

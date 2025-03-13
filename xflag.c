@@ -258,6 +258,8 @@ static int muitooct( char *buf, uint i ){
 // from the beginning. Those divisions are expensive in processor cycles,
 // but I don't expect this to get problematic.
 // I do leave the other conversions here, just for the not so possible case.
+//
+// writing right to left can be regarded as tribute to the chinese culture..
 char* muitobase( char *buf /* size >=16 */, uint i, uint base ){
 	//assert(base>4);
 
@@ -265,10 +267,10 @@ char* muitobase( char *buf /* size >=16 */, uint i, uint base ){
 	*p = 0;
 
 	do {
-		*(--p) = '0' + i % base;
+		*(--p) = '0' + i % base; // surprisingly, the compiler emits a single div for mod and div..
 		if ( *p > '9' )
 			*p += 39;
-	} while ( (i=i/base) );
+	} while ( (i = i/base) );
 	
 	return(p);
 }
