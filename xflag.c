@@ -4,8 +4,8 @@
 
 #define TOOL xflag
 #define LICENSE BSD3clause
-#define VERSION "0.1-devel-27rr"
-#define GITCOMMIT commit ecd104a677a15b3e842d228934a0ec9a3fe92245
+#define VERSION "0.1-devel-27rt"
+#define GITCOMMIT ecd104a677a15b3e842d228934a0ec9a3fe92245
 
 #include "tools.h"
 
