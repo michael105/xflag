@@ -22,5 +22,8 @@ inittest:
 
 up:
 	sed -Ei "s/(^#define VERSION .*)devel.*/\1devel-`revision.sh`\"/" xflag.c
+	git commit -m revision xflag.c
+	sed -Ei "s/^(#define GITCOMMIT ).*/\1`git log | sed -e '1s/commit //;q'`/" xflag.c
+	git commit -m commithash xflag.c
 
 
