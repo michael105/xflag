@@ -214,7 +214,7 @@ const char flagletters[] = {_FLAGS}; // string of all letters (without ending 0)
 // convert uint to hex.
 // did have some fun with branchless experiments.
 // I again prefer the in opcodes smallest solution.
-int muitohex( char* buf, uint i ){
+static int muitohex( char* buf, uint i ){
 	char *p = buf;
 	//*p++ = '0'; *p++='x';
 	uint digits = 1;
@@ -234,7 +234,7 @@ int muitohex( char* buf, uint i ){
 	return(p-buf);
 }
 
-int muitooct( char *buf, uint i ){
+static int muitooct( char *buf, uint i ){
 	uint digits = 1; // at least one digit (0)
 	char *p = buf;
 	//*p++ = '0'; // prefix 0
@@ -252,6 +252,26 @@ int muitooct( char *buf, uint i ){
 	return(p-buf);
 }
 
+// update. so. I'm a bit annoyed about myself.
+// final solution below. 
+// Should have thought about the smallest possible solution
+// from the beginning. Those divisions are expensive in processor cycles,
+// but I don't expect this to get problematic.
+// I do leave the other conversions here, just for the not so possible case.
+char* muitobase( char *buf /* size >=16 */, uint i, uint base ){
+	//assert(base>4);
+
+	char *p = buf+15; 
+	*p = 0;
+
+	do {
+		*(--p) = '0' + i % base;
+		if ( *p > '9' )
+			*p += 39;
+	} while ( (i=i/base) );
+	
+	return(p);
+}
 
 
 // notes: needs abstraction to be included in ls.
@@ -321,12 +341,14 @@ int _xflag_main( uint opts, char* path, xflag_t setflags, xflag_t delflags, uint
 	char buf[LEN+2]; // 
 						 
 	if ( OPT(o) ){
-		muitooct( buf, fsx.fsx_xflags );
-		prints( buf,"\t" ); 
+		//muitooct( buf, fsx.fsx_xflags );
+		//prints( buf,"\t" ); 
+		prints(muitobase(buf,fsx.fsx_xflags,8),"\t");
 	} 
 	if ( OPT(x) ){
-		muitohex( buf, fsx.fsx_xflags );
-		prints( buf,"\t" ); 
+		//muitohex( buf, fsx.fsx_xflags );
+		//prints( buf,"\t" ); 
+		prints(muitobase(buf,fsx.fsx_xflags,16),"\t");
 	} 
 
 	IFEXT( if ( OPT(l) )
