@@ -32,6 +32,178 @@ The most detailed information about the flags I could find is in the manpage of 
 xflag uses the generic linux ioctl calls FS_IOC_FSGETXATTR / FS_IOC_FSSETXATTR,
 but the documented flags are the same for other filesystems (if implemented).
 
+---
+
+xflag -H
+
+```
+List or modify extended flags of files and directories.
+
+Usage: xflag [-hHclpDgxoFiI] [-P projectid] [-a addflags] [-s setflags] [-d deleteflags]  path [path] ...
+
+ -h                show usage
+ -H                show help
+ -c                compact format
+ -l                long format
+ -p                print projectid
+ -P projectid      set projectid
+ -a addflags       add flags
+ -s setflags       set given flags exclusive
+ -d deleteflags    delete flags
+ -D                remove all flags
+ -g                print flags (default)
+ -x                print flags hexadecimal
+ -o                print flags octal
+ -F                don't display filenames
+ -i                set immutable
+ -I                revoke immutable
+
+flags:
+
+a append
+A noatime
+C cowextsize
+d nodump
+e extsize
+E extsizeinherit
+f nodefrag
+i immutable
+n nosymlinks
+p prealloc
+P projectinherit
+r realtime
+S filestream
+s sync
+t rtinherit
+x dax
+X hasattr
+
+```
+
+
+Copied from the xfs manpage:
+
+```
+
+
+REALTIME
+       The file is a realtime file.  This bit can only be changed
+       on a file when it has no allocated extents.
+
+PREALLOC
+       The file has preallocated space.
+
+IMMUTABLE
+       The file is immutable - it cannot be modified, deleted or
+       renamed, no link can be created to this file and no data
+       can be written to the file.  Only the superuser or a
+       process possessing the CAP_LINUX_IMMUTABLE capability can
+       set or clear this flag.  If this flag is set before a
+       XFS_IOC_FSSETXATTR call and would not be cleared by the
+       call, then no other attributes can be changed and EPERM
+       will be returned.
+
+APPEND
+       The file is append-only - it can only be opened in append
+       mode for writing.  For directories, this means that files
+       cannot be unlinked from this directory.  Only the superuser
+       or a process possessing the CAP_LINUX_IMMUTABLE capability
+       can set or clear this flag.
+
+SYNC
+       All writes to the file are synchronous.  If set on a
+       directory and the /proc/sys/fs/xfs/inherit_sync tunable is
+       set to 1, new files and subdirectories created in the
+       directory will also have the flag set.
+
+NOATIME
+       When the file is accessed, its atime record is not
+       modified.  If set on a directory and the
+       /proc/sys/fs/xfs/inherit_noatime tunable is set to 1, new
+       files and subdirectories created in the directory will also
+       have the flag set.
+
+NODUMP
+       The file should be skipped by backup utilities.  If set on
+       a directory and the /proc/sys/fs/xfs/inherit_nodump tunable
+       is set to 1, new files and subdirectories created in the
+       directory will also have the flag set.
+
+RTINHERIT
+       Realtime inheritance bit - new files created in the
+       directory will be automatically created as realtime files.
+       If set on a directory, new subdirectories created in the
+       directory will also have the inheritance flag set.
+
+PROJINHERIT
+       Project inheritance bit - new files and directories created
+       in this directory will inherit the project ID of this
+       directory.  If set on a directory, new subdirectories
+       created in the directory will also have the inheritance
+       flag set.
+
+NOSYMLINKS
+       Disallows creation of symbolic links in the directory.
+       This flag can only be set on a directory.  If set on a
+       directory and the /proc/sys/fs/xfs/inherit_nosymlinks
+       tunable is set to 1, new files and subdirectories created
+       in the directory will also have the flag set.
+
+EXTSIZE
+       Extent size bit - if a basic extent size value is set on
+       the file then the allocator will allocate in multiples of
+       the set size for this file (see fsx_extsize below).  The
+       extent size can only be changed on a file when it has no
+       allocated extents.
+
+EXTSZINHERIT
+       Extent size inheritance bit - new files and directories
+       created in the directory will inherit the extent size value
+       (see fsx_extsize below) of the parent directory.  New
+       subdirectories created in the directory will inherit the
+       extent size inheritance bit.
+
+NODEFRAG
+       No defragment file bit - the file should be skipped during
+       a defragmentation operation.  If set on a directory and the
+       /proc/sys/fs/xfs/inherit_nodefrag tunable is set to 1, new
+       files and subdirectories created in the directory will also
+       have the flag set.
+
+FILESTREAM
+       Filestream allocator bit - allows a directory to reserve an
+       allocation group for exclusive use by files created within
+       that directory.  Files being written in other directories
+       will not use the same allocation group and so files within
+       different directories will not interleave extents on disk.
+       The reservation is only active while files are being
+       created and written into the directory.  If set on a
+       directory, new files and subdirectories created in the
+       directory will also have the flag set.
+
+DAX
+       If the filesystem lives on directly accessible persistent
+       memory, reads and writes to this file will go straight to
+       the persistent memory, bypassing the page cache.  If set on
+       a directory, new files and subdirectories created in the
+       directory will also have the flag set.  This flag cannot be
+       set on filesystems which have the reflink feature enabled.
+
+COWEXTSIZE
+       Copy on Write Extent size bit - if a CoW extent size value
+       is set on the file, the allocator will allocate extents for
+       staging a copy on write operation in multiples of the set
+       size for this file (see fsx_cowextsize below).  If set on a
+       directory, new files and subdirectories created in the
+       directory will have both the flag and the CoW extent size
+       value set.
+
+HASATTR
+       The file has extended attributes associated with it.
+
+```
+
+
 
 ---
 
