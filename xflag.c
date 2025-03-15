@@ -106,9 +106,9 @@ typedef unsigned int xflag_t;
 	g,,"print flags (default)", \
 	x,,"print flags hexadecimal", \
 	o,,"print flags octal", \
-	F,,"don't display filenames", \
+	F,,"don't display filename", \
 	i,,"set immutable", \
-	I,,"revoke immutable"
+	I,,"revoke immutability"
 
 #define INT_OPTS P
 CHECK_OPTIONS;
@@ -493,6 +493,7 @@ MAIN_TEST{
 	#define _T(_opts) writesl( #_opts ); xflag_main(OPT_BITS(_opts),*argv);
 	FOREACH(_T,,g,g+c,g+l,l+o+x);
 
+	
 	
 
 	
