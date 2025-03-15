@@ -167,52 +167,71 @@ X hasattr        has extended attributes
 )");
 
 
-#define _FLAGS	\
-F(FS_XFLAG_REALTIME,'r',"realtime","data in realtime volume") \
-F(FS_XFLAG_PREALLOC,'p',"prealloc","preallocated file extents") \
-F(FS_XFLAG_IMMUTABLE,'i',"immutable","file cannot be modified") \
-F(FS_XFLAG_APPEND,'a',"append","all writes append") \
-F(FS_XFLAG_SYNC,'s',"sync","all writes synchronous") \
-F(FS_XFLAG_NOATIME,'A',"noatime","do not update access time") \
-F(FS_XFLAG_NODUMP,'d',"nodump","do not include in backups") \
-F(FS_XFLAG_RTINHERIT,'t',"rtinherit","create with rt bit set") \
-F(FS_XFLAG_PROJINHERIT,'P',"projectinherit","create with parents projid") \
-F(FS_XFLAG_NOSYMLINKS,'n',"nosymlinks","disallow symlink creation") \
-F(FS_XFLAG_EXTSIZE,'e',"extsize","extent size allocator hint") \
-F(FS_XFLAG_EXTSZINHERIT,'E',"extsizeinherit","inherit inode extent size") \
-F(FS_XFLAG_NODEFRAG,'f',"nodefrag","do not defragment") \
-F(FS_XFLAG_FILESTREAM,'S',"filestream","use filestream allocator") \
-F(FS_XFLAG_DAX,'x',"dax","use DAX for IO") \
-F(FS_XFLAG_COWEXTSIZE,'C',"cowextsize","CoW extent size allocator hint") \
-F(FS_XFLAG_HASATTR,'X',"hasattr","has extended attributes") 
+//#define _FLAGS	\
+F(FS_XFLAG_REALTIME,r,"realtime","data in realtime volume") \
+F(FS_XFLAG_PREALLOC,p,"prealloc","preallocated file extents") \
+F(FS_XFLAG_IMMUTABLE,i,"immutable","file cannot be modified") \
+F(FS_XFLAG_APPEND,a,"append","all writes append") \
+F(FS_XFLAG_SYNC,s,"sync","all writes synchronous") \
+F(FS_XFLAG_NOATIME,A,"noatime","do not update access time") \
+F(FS_XFLAG_NODUMP,d,"nodump","do not include in backups") \
+F(FS_XFLAG_RTINHERIT,t,"rtinherit","create with rt bit set") \
+F(FS_XFLAG_PROJINHERIT,P,"projectinherit","create with parents projid") \
+F(FS_XFLAG_NOSYMLINKS,n,"nosymlinks","disallow symlink creation") \
+F(FS_XFLAG_EXTSIZE,e,"extsize","extent size allocator hint") \
+F(FS_XFLAG_EXTSZINHERIT,E,"extsizeinherit","inherit inode extent size") \
+F(FS_XFLAG_NODEFRAG,f,"nodefrag","do not defragment") \
+F(FS_XFLAG_FILESTREAM,S,"filestream","use filestream allocator") \
+F(FS_XFLAG_DAX,x,"dax","use DAX for IO") \
+F(FS_XFLAG_COWEXTSIZE,C,"cowextsize","CoW extent size allocator hint") \
+F(FS_XFLAG_HASATTR,X,"hasattr","has extended attributes") 
+
+#define _XFLAGS	\
+__XFLAG(FS_XFLAG_REALTIME,r,realtime) \
+__XFLAG(FS_XFLAG_PREALLOC,p,prealloc) \
+__XFLAG(FS_XFLAG_IMMUTABLE,i,immutable) \
+__XFLAG(FS_XFLAG_APPEND,a,append) \
+__XFLAG(FS_XFLAG_SYNC,s,sync) \
+__XFLAG(FS_XFLAG_NOATIME,A,noatime) \
+__XFLAG(FS_XFLAG_NODUMP,d,nodump) \
+__XFLAG(FS_XFLAG_RTINHERIT,t,rtinherit) \
+__XFLAG(FS_XFLAG_PROJINHERIT,P,projectinherit) \
+__XFLAG(FS_XFLAG_NOSYMLINKS,n,nosymlinks) \
+__XFLAG(FS_XFLAG_EXTSIZE,e,extsize) \
+__XFLAG(FS_XFLAG_EXTSZINHERIT,E,extsizeinherit) \
+__XFLAG(FS_XFLAG_NODEFRAG,f,nodefrag) \
+__XFLAG(FS_XFLAG_FILESTREAM,S,filestream) \
+__XFLAG(FS_XFLAG_DAX,x,dax) \
+__XFLAG(FS_XFLAG_COWEXTSIZE,C,cowextsize) \
+__XFLAG(FS_XFLAG_HASATTR,X,hasattr) 
 
 
 struct flagstruct {
 	xflag_t flag;
 	const char letter;
 	const char* shortname;
-	//IFEXT(const char *desc;)
 };
 
+#define _SQ(_x) _Q(_x)[0]
 
 // extended
-#define F(flag,letter,shortname,longdesc) { flag, letter, shortname }, //IFEXT(,longdesc) },
+#define __XFLAG(flag,letter,shortname) { flag, _SQ(letter), _Q(shortname) }, 
 
 const struct flagstruct flagarr[] = {
-	_FLAGS
+	_XFLAGS
 };
-#undef F
+#undef __XFLAG
 
 // tiny 
-#define F(a,b,c,d) a|
-const uint32_t flagmask = _FLAGS 0; // all possible flagbits
-#undef F
-#define F(a,b,c,d) b,
-const char flagletters[] = {_FLAGS}; // string of all letters (without ending 0)
-#undef F
+//#define F(a,b,c,d) a|
+//const xflag_t_t flagmask = _FLAGS 0; // all possible flagbits
+//#undef F
+//#define F(a,b,c,d) _Q(b)
+//const char flagletters[] = {_FLAGS}; // string of all letters (without ending 0)
+//#undef F
 
-//#define F(a,b,c,d)  
-//#define FLAGSENUM enum { 
+#define __XFLAG(_xflag,_letter,_shortname)  _letter=_xflag,_shortname=_letter,
+#define XFLAGS_ENUM enum { _XFLAGS }
 
 // convert uint to hex.
 // did have some fun with branchless experiments.
@@ -403,7 +422,6 @@ int _xflag_main( uint opts, char* path, xflag_t setflags, xflag_t delflags, uint
 	IFEXT( } ) 
 
 	printl();
-
 
 	return(ret);
 	# undef LEN
