@@ -490,11 +490,10 @@ MAIN_TEST{
 		lf = flagarr[a].flag;
 	}
 
-	xflag_main(OPT_BITS(g),*argv);
-	xflag_main(OPT_BITS(g+c),*argv);
-	xflag_main(OPT_BITS(g+l),*argv);
+	#define _T(_opts) writesl( #_opts ); xflag_main(OPT_BITS(_opts),*argv);
+	FOREACH(_T,,g,g+c,g+l,l+o+x);
 
-	//xflag_main(OPT_BITS(a),*argv,
+	
 
 	
 	exit(0);
