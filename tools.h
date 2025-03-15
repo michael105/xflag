@@ -54,7 +54,10 @@
 # define USAGE(...) \
 void _usage(int exc){\
 	ewritesl("Usage: " _TOOL " " OPTIONS_USAGE __VA_OPT__(" " __VA_ARGS__) );\
-	if ( exc>=0 ) exit(exc);\
+	if ( exc>=0 ) { \
+		ewritesl(  _TOOL " -H for help" ); \
+		exit(exc);\
+	} \
 }
 
 # define usage(...) _usage( __VA_ARGS__ +0 )
