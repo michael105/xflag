@@ -56,7 +56,7 @@ Usage: xflag [-hHclpDgxoFiI] [-P projectid] [-a addflags] [-s setflags] [-d dele
  -o                print flags octal
  -F                don't display filename
  -i                set immutable
- -I                revoke immutabilty
+ -I                revoke immutability
 
 flags:
 
